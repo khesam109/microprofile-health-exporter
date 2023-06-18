@@ -1,0 +1,10 @@
+scan_interval:
+  period: 1
+  unit: minute
+server_config:
+  root_context: '/metrics/prometheus'
+  port: 9095
+services:
+  - name: 'test'
+    path: 'http://localhost:8080/q/health'
+
