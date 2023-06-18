@@ -32,27 +32,39 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed"
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "displayMode": "color-background",
+            "filterable": false,
             "inspect": false
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "DOWN": {
+                  "color": "red",
+                  "index": 0
+                },
+                "UP": {
+                  "color": "green",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -60,9 +72,73 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName"
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
             },
             "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "UNKNOWN"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "UP"
+                      },
+                      "-1": {
+                        "color": "red",
+                        "index": 2,
+                        "text": "DOWN"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
           }
         ]
       },
@@ -81,7 +157,8 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "9.3.1",
       "targets": [
@@ -92,7 +169,7 @@
           },
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "sum by(organ_name, instance, service_name) (service_status)",
+          "expr": "sum by(instance, service_name, organ_name) (service_status)",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -101,7 +178,23 @@
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "System Health",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 4,
+              "instance": 1,
+              "organ_name": 3,
+              "service_name": 2
+            },
+            "renameByName": {}
+          }
+        }
+      ],
       "type": "table"
     }
   ],
