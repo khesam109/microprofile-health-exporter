@@ -67,7 +67,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.khesam.certificate.exporter.Runner</mainClass>
+                            <mainClass>com.khesam.health.exporter.Runner</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
