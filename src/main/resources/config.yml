@@ -7,4 +7,5 @@ server_config:
 services:
   - name: 'test'
     path: 'http://localhost:8080/q/health'
+#    ca_file_path: ''
 

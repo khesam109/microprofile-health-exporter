@@ -1,4 +1,4 @@
-package com.khesam.health.exporter.collector;
+package com.khesam.health.exporter.collector.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,15 +19,15 @@ public class VitalSign {
         this.organsStatus.put(organName, healthStatus);
     }
 
-    public String getServiceName() {
+    public String serviceName() {
         return serviceName;
     }
 
-    public HealthStatus getHealthStatus() {
+    public HealthStatus healthStatus() {
         return healthStatus;
     }
 
-    public Map<String, HealthStatus> getOrgansStatus() {
+    public Map<String, HealthStatus> organsStatus() {
         return organsStatus;
     }
 }

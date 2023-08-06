@@ -11,6 +11,7 @@
     <properties>
         <jackson.version>2.15.1</jackson.version>
         <prometheus.version>0.16.0</prometheus.version>
+        <dagger.version>2.46.1</dagger.version>
         <tinylog.version>2.5.0</tinylog.version>
         <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -46,6 +47,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>${dagger.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>tinylog-api</artifactId>
             <version>${tinylog.version}</version>
@@ -59,6 +67,21 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.dagger</groupId>
+                            <artifactId>dagger-compiler</artifactId>
+                            <version>${dagger.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

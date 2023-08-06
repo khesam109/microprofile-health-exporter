@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public record HealthCheckResponseData(
+public record MicroprofileHealthCheckResponseData(
         @JsonProperty("status") String status,
         @JsonProperty("checks") List<Check> checks
 ) implements Serializable {

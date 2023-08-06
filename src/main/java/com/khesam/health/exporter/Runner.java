@@ -1,13 +1,12 @@
 package com.khesam.health.exporter;
 
-import com.khesam.health.exporter.collector.VitalSignCollector;
-import com.khesam.health.exporter.collector.VitalSignMapper;
-import com.khesam.health.exporter.config.ApplicationParameter;
 import com.khesam.health.exporter.config.ConfigReader;
-import com.khesam.health.exporter.helper.HttpClientHelper;
-import com.khesam.health.exporter.helper.JsonHelper;
-import com.khesam.health.exporter.prometheus.PrometheusHealthExporter;
-import com.khesam.health.exporter.scheduler.PeriodicTaskRunner;
+import com.khesam.health.exporter.config.ScheduleConfig;
+import com.khesam.health.exporter.config.ServerConfig;
+import com.khesam.health.exporter.config.ServiceScan;
+import com.khesam.health.exporter.di.ApplicationDependencyComponent;
+import com.khesam.health.exporter.di.DaggerApplicationDependencyComponent;
+import com.khesam.health.exporter.scheduler.VitalSignCollectorScheduler;
 import com.sun.net.httpserver.HttpServer;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.HTTPServer;
@@ -19,46 +18,59 @@ import java.net.InetSocketAddress;
 public class Runner {
 
     public static void main(String[] args) {
-        try {
-            ConfigReader.init();
-            runServer();
-            runScheduler();
+        ApplicationDependencyComponent factory = DaggerApplicationDependencyComponent.create();
+        ConfigReader configReader = factory.configReader();
+        VitalSignCollectorScheduler vitalSignCollectorScheduler = factory.vitalSignCollectorScheduler();
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        try {
+            configReader.init();
+            ServerConfig serverConfig = configReader.serverConfig();
+            ScheduleConfig scheduleConfig = configReader.scheduleConfig();
+            ServiceScan serviceScan = configReader.serviceScan();
+
+            runServer(serverConfig);
+
+            startScheduling(vitalSignCollectorScheduler, scheduleConfig, serviceScan);
+
+        } catch (IOException ex) {
+            Logger.error(ex, "Failed to read config");
+            System.exit(1);
+        } catch (IllegalStateException ex) {
+            Logger.error("Please init config reader first");
+            System.exit(1);
         }
     }
 
-    private static void runServer() throws IOException {
+    private static void runServer(ServerConfig serverConfig) {
         Logger.info("Starting exporter...");
-        HttpServer httpServer = HttpServer.create(
-                new InetSocketAddress(
-                        ApplicationParameter.serverConfig().port()
-                ), 3
-        );
 
-        httpServer.createContext(
-                ApplicationParameter.serverConfig().rootContext(),
-                new HTTPServer.HTTPMetricHandler(CollectorRegistry.defaultRegistry)
-        );
+        try {
+            HttpServer httpServer = HttpServer.create(
+                    new InetSocketAddress(
+                            serverConfig.port()
+                    ), 3
+            );
 
-        new HTTPServer.Builder()
-                .withHttpServer(httpServer)
-                .build();
+            httpServer.createContext(
+                    serverConfig.contextRoot(),
+                    new HTTPServer.HTTPMetricHandler(CollectorRegistry.defaultRegistry)
+            );
 
-        Logger.info("Http endpoint successfully stated");
+            new HTTPServer.Builder()
+                    .withHttpServer(httpServer)
+                    .build();
+
+            Logger.info("Http endpoint successfully started on port {}", serverConfig.port());
+        } catch (IOException e) {
+            Logger.error(e, "Failed to start http server");
+        }
     }
 
-    private static void runScheduler() {
-        PeriodicTaskRunner.getInstance().run(
-                new VitalSignCollector(
-                        HttpClientHelper.getInstance(),
-                        JsonHelper.getInstance(),
-                        VitalSignMapper.getInstance(),
-                        vitalSigns -> vitalSigns.forEach(
-                                e -> PrometheusHealthExporter.getInstance().collectData(e)
-                        )
-                )
-        );
+    private static void startScheduling(
+            VitalSignCollectorScheduler vitalSignCollectorScheduler,
+            ScheduleConfig scheduleConfig,
+            ServiceScan serviceScan
+    ) {
+        vitalSignCollectorScheduler.getVitalSignCollectorTaskRunner(scheduleConfig, serviceScan).run();
     }
 }

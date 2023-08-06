@@ -1,4 +1,4 @@
-package com.khesam.health.exporter.collector;
+package com.khesam.health.exporter.collector.model;
 
 import java.util.EnumSet;
 
