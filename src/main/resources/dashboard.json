@@ -24,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 12,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -36,10 +37,10 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": "left",
             "displayMode": "color-background",
             "filterable": false,
             "inspect": false
@@ -63,7 +64,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "transparent",
                 "value": null
               }
             ]
@@ -93,13 +94,6 @@
                 "value": true
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "service_name"
-            },
-            "properties": []
           },
           {
             "matcher": {
@@ -137,6 +131,50 @@
                 "value": {
                   "mode": "thresholds"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Status"
+              },
+              {
+                "id": "custom.width",
+                "value": 60
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Service"
+              },
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "organ_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Organ Name"
+              },
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "noValue",
+                "value": "Service Status"
               }
             ]
           }
@@ -210,7 +248,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "New dashboard",
-  "version": 0,
+  "title": "Health Exporter",
+  "uid": "health-exporter-dashboard-opr-v2",
+  "version": 2,
   "weekStart": ""
 }

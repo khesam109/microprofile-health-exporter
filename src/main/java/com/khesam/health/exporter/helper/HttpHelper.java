@@ -42,13 +42,20 @@ public class HttpHelper {
         List<VitalSign> vitalSigns = new ArrayList<>();
         this.exporterHttpClients.forEach((name, httpClient) -> {
             try {
-                vitalSigns.add(
-                        vitalSignMapper.fromServiceNameAndMicroprofileHealthCheckResponseData(
-                                name, objectMapper.readValue(
-                                        httpClient.getVitalSign(), MicroprofileHealthCheckResponseData.class
-                                )
-                        )
-                );
+                String healthResponse = httpClient.getVitalSign();
+                if (healthResponse != null && !healthResponse.isEmpty()) {
+                    vitalSigns.add(
+                            vitalSignMapper.fromServiceNameAndMicroprofileHealthCheckResponseData(
+                                    name, objectMapper.readValue(
+                                            httpClient.getVitalSign(), MicroprofileHealthCheckResponseData.class
+                                    )
+                            )
+                    );
+                } else {
+                    vitalSigns.add(
+                            new VitalSign(name, HealthStatus.UNKWON)
+                    );
+                }
             } catch (JsonProcessingException e) {
                 vitalSigns.add(new VitalSign(name, HealthStatus.UNKWON));
             }

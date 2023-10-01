@@ -47,14 +47,14 @@ public class ExporterHttpClient {
             if (isHappy(response.statusCode())) {
                 return response.body();
             } else {
-                Logger.error("Unexpected response! Waiting for better answer. Http Status Cde: {}, Http response: {}",
+                Logger.error("Unexpected response! Waiting for better answer. Http Status Code: {}, Http response: {}",
                         response.statusCode(), response.statusCode()
                 );
                 return null;
             }
 
         } catch (IOException | InterruptedException e) {
-            Logger.error("Failed to call ");
+            Logger.error(e, "Failed to call");
             return null;
         }
     }

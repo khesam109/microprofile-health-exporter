@@ -11,8 +11,8 @@ import java.io.IOException;
 public class ConfigReader {
 
     private static final String CONFIG_PATH_KEY = "EXPORTER_CONFIG_PATH";
-    private static final String DEFAULT_CONFIG_PATH = "F:\\Personal\\github\\certificate-exporter\\src\\main\\resources\\config.yml";
-    //    private static final String DEFAULT_CONFIG_PATH = "/etc/certificateexporter/config.yml";
+        private static final String DEFAULT_CONFIG_PATH = "F:\\Personal\\github\\microprofile-health-exporter\\src\\main\\resources\\config.yml";
+//    private static final String DEFAULT_CONFIG_PATH = "/etc/health-exporter/config.yml";
     private final ObjectMapper objectMapper;
     private final ConfigMapper configMapper;
 

@@ -1,11 +1,13 @@
 scan_interval:
   period: 10
-  unit: second
+  unit: seconds
 server_config:
-  root_context: '/metrics/prometheus'
+  context_root: '/health/prometheus'
   port: 9095
 services:
   - name: 'test'
-    path: 'http://localhost:8080/q/health'
+    path: 'http://localhost:8585/management/health'
+  - name: 'test2'
+    path: 'http://localhost:8586/management/health'
 #    ca_file_path: ''
 

@@ -6,7 +6,7 @@
 
     <groupId>com.khesam</groupId>
     <artifactId>prom-microprofile-health-exporter</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <properties>
         <jackson.version>2.15.1</jackson.version>
