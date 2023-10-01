@@ -6,14 +6,15 @@
 
     <groupId>com.khesam</groupId>
     <artifactId>prom-microprofile-health-exporter</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 
     <properties>
         <jackson.version>2.15.1</jackson.version>
         <prometheus.version>0.16.0</prometheus.version>
         <dagger.version>2.46.1</dagger.version>
-        <tinylog.version>2.5.0</tinylog.version>
-        <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
+        <tinylog.version>2.6.2</tinylog.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
@@ -70,7 +71,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
