@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 public enum HealthStatus {
 
-    DOWN(-1), UNKWON(0), UP(1);
+    UNREACHABLE(-2), DOWN(-1), UNKWON(0), UP(1);
     public final int code;
 
     HealthStatus(int code) {

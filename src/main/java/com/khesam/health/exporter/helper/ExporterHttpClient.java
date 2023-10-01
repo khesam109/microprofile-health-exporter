@@ -1,8 +1,9 @@
 package com.khesam.health.exporter.helper;
 
+import com.khesam.health.exporter.exception.BullshitAnswerException;
+import com.khesam.health.exporter.exception.MakeAppointmentException;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
-import org.tinylog.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -47,15 +48,11 @@ public class ExporterHttpClient {
             if (isHappy(response.statusCode())) {
                 return response.body();
             } else {
-                Logger.error("Unexpected response! Waiting for better answer. Http Status Code: {}, Http response: {}",
-                        response.statusCode(), response.statusCode()
-                );
-                return null;
+                throw new BullshitAnswerException("WTF response! Waiting for better answer. Http Status Code: " +
+                        response.statusCode() + " - Http response: " + response.body());
             }
-
         } catch (IOException | InterruptedException e) {
-            Logger.error(e, "Failed to call");
-            return null;
+            throw new MakeAppointmentException("Failed to reach: " + this.httpRequest.uri().toString(), e);
         }
     }
 

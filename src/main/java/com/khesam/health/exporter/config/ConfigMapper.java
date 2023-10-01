@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 @Singleton
 public class ConfigMapper {
 
+    private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
+
     @Inject
     public ConfigMapper() {
     }
@@ -49,8 +51,8 @@ public class ConfigMapper {
                     unit.toUpperCase(Locale.ROOT)
             );
         } catch (Exception ex) {
-            Logger.error(ex, "Cannot convert time unit. So we decide to use default time unit");
-            return null;
+            Logger.error(ex, "Cannot convert time unit. So we decide to use seconds as default time unit");
+            return DEFAULT_TIME_UNIT;
         }
     }
 }

@@ -6,6 +6,8 @@ import com.khesam.health.exporter.collector.model.HealthStatus;
 import com.khesam.health.exporter.collector.model.VitalSign;
 import com.khesam.health.exporter.config.ServiceScan;
 import com.khesam.health.exporter.di.HttpClientFactory;
+import com.khesam.health.exporter.exception.BullshitAnswerException;
+import com.khesam.health.exporter.exception.MakeAppointmentException;
 import org.tinylog.Logger;
 
 import javax.inject.Inject;
@@ -52,11 +54,13 @@ public class HttpHelper {
                             )
                     );
                 } else {
-                    vitalSigns.add(
-                            new VitalSign(name, HealthStatus.UNKWON)
-                    );
+                    vitalSigns.add(new VitalSign(name, HealthStatus.UNKWON));
                 }
-            } catch (JsonProcessingException e) {
+            } catch (MakeAppointmentException e) {
+                Logger.error(e);
+                vitalSigns.add(new VitalSign(name, HealthStatus.UNREACHABLE));
+            } catch (BullshitAnswerException | JsonProcessingException e) {
+                Logger.error(e);
                 vitalSigns.add(new VitalSign(name, HealthStatus.UNKWON));
             }
         });
