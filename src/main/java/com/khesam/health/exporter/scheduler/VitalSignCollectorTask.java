@@ -35,6 +35,6 @@ public class VitalSignCollectorTask implements Runnable {
         List<VitalSign> vitalSigns = vitalSignCollector.probeVitalSign(serviceScan);
         vitalSignCollectorCallback.onSuccess(vitalSigns);
 
-        Logger.info("Certificate collector scheduler just finished at {}", new Date().toString());
+        Logger.info("Vital sign collector scheduler just finished at {}", new Date().toString());
     }
 }

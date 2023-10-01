@@ -4,6 +4,7 @@ import com.khesam.health.exporter.exception.BullshitAnswerException;
 import com.khesam.health.exporter.exception.MakeAppointmentException;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
+import org.tinylog.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -40,6 +41,7 @@ public class ExporterHttpClient {
     }
 
     String getVitalSign() {
+        Logger.info("Start probing vital sign of: {}", httpRequest.uri().toString());
         try {
             HttpResponse<String> response = httpClient.send(
                     httpRequest,
